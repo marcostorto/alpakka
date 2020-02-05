@@ -95,7 +95,7 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
 
   private val onSubscribe: AsyncCallback[Try[IMqttToken]] = getAsyncCallback[Try[IMqttToken]] { conn =>
     subscriptionPromise.complete(conn.map(_ => {
-      log.debug("subscription established")
+      log.debug(s"${client.getClientId} subscription established")
       Done
     }))
     pull(in)
@@ -103,7 +103,7 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
 
   private val onConnect: AsyncCallback[IMqttAsyncClient] =
     getAsyncCallback[IMqttAsyncClient]((client: IMqttAsyncClient) => {
-      log.debug("connected")
+      log.info(s"${client.getClientId} connected")
       if (subscriptions.nonEmpty) {
         if (manualAcks) client.setManualAcks(true)
         val (topics, qoses) = subscriptions.unzip
@@ -196,10 +196,10 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
 
     override def connectionLost(cause: Throwable): Unit =
       if (!connectionSettings.automaticReconnect) {
-        log.info("connection lost (you might want to enable `automaticReconnect` in `MqttConnectionSettings`)")
+        log.info(s"${client.getClientId} connection lost (you might want to enable `automaticReconnect` in `MqttConnectionSettings`)")
         onConnectionLost.invoke(cause)
       } else {
-        log.info("connection lost, trying to reconnect")
+        log.info(s"${client.getClientId} connection lost, trying to reconnect")
       }
 
     override def connectComplete(reconnect: Boolean, serverURI: String): Unit = {
@@ -289,7 +289,7 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
         )
 
     try {
-      log.debug("stage stopped, disconnecting")
+      log.info(s"${client.getClientId} stage stopped, disconnecting")
       mqttClient.disconnect(
         connectionSettings.disconnectQuiesceTimeout.toMillis,
         null,
