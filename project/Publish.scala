@@ -1,15 +1,17 @@
 import sbt._, Keys._
 
 object Publish extends AutoPlugin {
-  import bintray.BintrayPlugin
-  import bintray.BintrayPlugin.autoImport._
-
-  override def trigger = allRequirements
-  override def requires = BintrayPlugin
 
   override def projectSettings = Seq(
-    bintrayOrganization := Some("akka"),
-    bintrayPackage := "alpakka",
-    bintrayRepository := (if (isSnapshot.value) "snapshots" else "maven")
+    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
+    publishTo := {
+      val nexus = "http://repo02.tecniplastgroup.com:8081/"
+
+      if (isSnapshot.value) {
+        Some("snapshots" at nexus + "repository/maven-snapshots/")
+      } else
+        Some("releases"  at nexus + "repository/maven-releases/")
+    }
   )
+
 }

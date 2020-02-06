@@ -2,50 +2,11 @@ import Whitesource.whitesourceGroup
 
 lazy val alpakka = project
   .in(file("."))
+  .enablePlugins(Publish)
   .enablePlugins(ScalaUnidocPlugin)
-  .disablePlugins(MimaPlugin, SitePlugin)
+  .disablePlugins(MimaPlugin, SitePlugin, BintrayPlugin)
   .aggregate(
-    amqp,
-    avroparquet,
-    awslambda,
-    azureStorageQueue,
-    cassandra,
-    couchbase,
-    csv,
-    dynamodb,
-    elasticsearch,
-    files,
-    ftp,
-    geode,
-    googleCloudPubSub,
-    googleCloudPubSubGrpc,
-    googleCloudStorage,
-    googleFcm,
-    hbase,
-    hdfs,
-    influxdb,
-    ironmq,
-    jms,
-    jsonStreaming,
-    kinesis,
-    kudu,
-    mongodb,
-    mqtt,
-    mqttStreaming,
-    orientdb,
-    reference,
-    s3,
-    springWeb,
-    simpleCodecs,
-    slick,
-    sns,
-    solr,
-    sqs,
-    sse,
-    text,
-    udp,
-    unixdomainsocket,
-    xml
+    mqtt
   )
   .aggregate(`doc-examples`)
   .settings(
@@ -401,3 +362,6 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
     )
   s
 }
+
+ThisBuild / version := "1.1.2p1"
+ThisBuild / isSnapshot := false

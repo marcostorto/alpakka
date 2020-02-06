@@ -196,7 +196,9 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
 
     override def connectionLost(cause: Throwable): Unit =
       if (!connectionSettings.automaticReconnect) {
-        log.info(s"${client.getClientId} connection lost (you might want to enable `automaticReconnect` in `MqttConnectionSettings`)")
+        log.info(
+          s"${client.getClientId} connection lost (you might want to enable `automaticReconnect` in `MqttConnectionSettings`)"
+        )
         onConnectionLost.invoke(cause)
       } else {
         log.info(s"${client.getClientId} connection lost, trying to reconnect")

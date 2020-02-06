@@ -1,5 +1,5 @@
 import sbt._
-import Keys._
+import Keys.{resolvers, _}
 
 object Dependencies {
 
@@ -298,8 +298,9 @@ object Dependencies {
 
   val Mqtt = Seq(
     libraryDependencies ++= Seq(
-        "org.eclipse.paho" % "org.eclipse.paho.client.mqttv3" % "1.2.0-SNAPSHOT" // Eclipse Public License 1.0
-      )
+        "org.eclipse.paho" % "org.eclipse.paho.client.mqttv3" % "1.2.2-SNAPSHOT" // Eclipse Public License 1.0
+      ),
+      resolvers += ("maven-snapshots" at "http://repo02.tecniplastgroup.com:8081/repository/maven-snapshots")
   )
 
   val MqttStreaming = Seq(
