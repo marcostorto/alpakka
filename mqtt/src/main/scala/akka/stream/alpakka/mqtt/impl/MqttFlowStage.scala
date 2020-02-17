@@ -95,7 +95,7 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
 
   private val onSubscribe: AsyncCallback[Try[IMqttToken]] = getAsyncCallback[Try[IMqttToken]] { conn =>
     subscriptionPromise.complete(conn.map(_ => {
-      log.debug(s"${client.getClientId} subscription established")
+      log.info(s"${client.getClientId} subscription established")
       Done
     }))
     pull(in)
@@ -264,6 +264,7 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
   }
 
   private def failStageWith(ex: Throwable): Unit = {
+    log.error(s"${client.getClientId} failing due to " + ex.getMessage, ex)
     subscriptionPromise.tryFailure(ex)
     failStage(ex)
   }

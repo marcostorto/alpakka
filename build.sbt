@@ -330,8 +330,8 @@ lazy val `doc-examples` = project
 def alpakkaProject(projectId: String, moduleName: String, additionalSettings: sbt.Def.SettingsDefinition*): Project = {
   import com.typesafe.tools.mima.core.{Problem, ProblemFilters}
   Project(id = projectId, base = file(projectId))
-    .enablePlugins(AutomateHeaderPlugin)
-    .disablePlugins(SitePlugin)
+    .enablePlugins(AutomateHeaderPlugin, Publish)
+    .disablePlugins(SitePlugin, BintrayPlugin)
     .settings(
       name := s"akka-stream-alpakka-$projectId",
       AutomaticModuleName.settings(s"akka.stream.alpakka.$moduleName"),
@@ -363,5 +363,5 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
   s
 }
 
-ThisBuild / version := "1.1.2p1"
+ThisBuild / version := "1.1.2p2"
 ThisBuild / isSnapshot := false
