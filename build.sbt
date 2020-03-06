@@ -363,5 +363,5 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
   s
 }
 
-ThisBuild / version := "1.1.2p2"
+ThisBuild / version := "1.1.2p3"
 ThisBuild / isSnapshot := false
