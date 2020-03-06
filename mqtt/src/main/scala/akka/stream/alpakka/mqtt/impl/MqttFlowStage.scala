@@ -264,7 +264,9 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
   }
 
   private def failStageWith(ex: Throwable): Unit = {
-    log.error(s"${client.getClientId} failing due to {}" + ex.getMessage, ex)
+    log.error(s"${client.getClientId} failing due to" + ex.getMessage)
+    ex.printStackTrace()
+    client.getDebug.dumpClientDebug()
     subscriptionPromise.tryFailure(ex)
     failStage(ex)
   }
