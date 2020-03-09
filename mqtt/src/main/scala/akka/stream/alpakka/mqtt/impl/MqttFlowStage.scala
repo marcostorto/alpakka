@@ -203,6 +203,10 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
       } else {
         log.info(s"${client.getClientId} connection lost, trying to reconnect" + cause.getMessage)
         cause.printStackTrace()
+        if (cause.isInstanceOf[MqttException]) {
+          log.info("cause: " + cause.getCause.getMessage)
+          cause.getCause.printStackTrace()
+        }
         client.getDebug.dumpClientDebug()
       }
 
@@ -268,6 +272,10 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
   private def failStageWith(ex: Throwable): Unit = {
     log.error(s"${client.getClientId} failing due to" + ex.getMessage)
     ex.printStackTrace()
+    if (ex.isInstanceOf[MqttException]) {
+      log.info("cause: " + ex.getCause.getMessage)
+      ex.getCause.printStackTrace()
+    }
     client.getDebug.dumpClientDebug()
     subscriptionPromise.tryFailure(ex)
     failStage(ex)
