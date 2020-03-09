@@ -272,7 +272,7 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
   private def failStageWith(ex: Throwable): Unit = {
     log.error(s"${client.getClientId} failing due to" + ex.getMessage)
     ex.printStackTrace()
-    if (ex.isInstanceOf[MqttException]) {
+    if (ex.isInstanceOf[MqttException] && ex.getCause != null) {
       log.info("cause: " + ex.getCause.getMessage)
       ex.getCause.printStackTrace()
     }
