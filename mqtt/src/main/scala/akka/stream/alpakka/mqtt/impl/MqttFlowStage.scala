@@ -201,7 +201,9 @@ abstract class MqttFlowStageLogic[I](in: Inlet[I],
         )
         onConnectionLost.invoke(cause)
       } else {
-        log.info(s"${client.getClientId} connection lost, trying to reconnect")
+        log.info(s"${client.getClientId} connection lost, trying to reconnect" + cause.getMessage)
+        cause.printStackTrace()
+        client.getDebug.dumpClientDebug()
       }
 
     override def connectComplete(reconnect: Boolean, serverURI: String): Unit = {
